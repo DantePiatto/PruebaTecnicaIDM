@@ -1,0 +1,39 @@
+# Compiled binaries
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Visual Studio and VS Code files
+.vscode/
+*.vs/
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Build artifacts
+*.dll
+*.exe
+*.pdb
+*.cache
+
+# Entity Framework Migrations
+
+
+# Rider / JetBrains
+.idea/
+
+# MacOS files
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
