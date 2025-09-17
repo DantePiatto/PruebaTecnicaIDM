@@ -10,7 +10,7 @@
                     "groupAttributeTypeId": "1826",
                     "name": "Elige el Ipo de pan"
                 },
-                "descripIon": "Tipo de pan",
+                "description": "Tipo de pan",
                 "quantityInformation": {
                     "groupAttributeQuantity": 1,
                     "showPricePerProduct": true,
@@ -55,7 +55,7 @@
                     "groupAttributeTypeId": "1848",
                     "name": "¿Deseas más carnes? (opcional)"
                 },
-                "descripIon": "Ad Carnes",
+                "description": "Ad Carnes",
                 "quantityInformation": {
                     "groupAttributeQuantity": 4,
                     "showPricePerProduct": true,
@@ -152,7 +152,7 @@
                     "groupAttributeTypeId": "90",
                     "name": "Personaliza tus toppings (opcional)"
                 },
-                "descripIon": "Ad Toppings",
+                "description": "Ad Toppings",
                 "quantityInformation": {
                     "groupAttributeQuantity": 5,
                     "showPricePerProduct": true,
@@ -262,7 +262,7 @@
                     "groupAttributeTypeId": "1854",
                     "name": "Personaliza tus salsas (opcional)"
                 },
-                "descripIon": "Ad Salsas",
+                "description": "Ad Salsas",
                 "quantityInformation": {
                     "groupAttributeQuantity": 5,
                     "showPricePerProduct": true,
@@ -385,7 +385,7 @@
                     "groupAttributeTypeId": "106",
                     "name": "Elige tu complemento"
                 },
-                "descripIon": null,
+                "description": null,
                 "quantityInformation": {
                     "groupAttributeQuantity": 1,
                     "showPricePerProduct": true,
@@ -482,7 +482,7 @@
                     "groupAttributeTypeId": "91",
                     "name": "Elige tu bebida"
                 },
-                "descripIon": null,
+                "description": null,
                 "quantityInformation": {
                     "groupAttributeQuantity": 1,
                     "showPricePerProduct": false,
