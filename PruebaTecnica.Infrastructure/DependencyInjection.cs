@@ -3,6 +3,7 @@ using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PruebaTecnica.Domain.Cart;
 using PruebaTecnica.Domain.Products;
 using PruebaTecnica.Infrastructure.Repositories;
 
@@ -44,7 +45,7 @@ public static class DependencyInjection
                
                return new InMemoryProductRepository(path); // ctor (string jsonFilePath)
            });
-        // services.AddSingleton<JwtService>();
+        services.AddSingleton<ICartRepository>();
 
 
 

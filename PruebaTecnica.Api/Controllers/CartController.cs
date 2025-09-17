@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using SB.NombreProyecto.Domain.DTOs;
 using PruebaTecnica.Api.Utils;
 using PruebaTecnica.Application.EntidadesGubernamentales.CreateEntidadGubernamental;
+using PruebaTecnica.Domain.Cart;
+using PruebaTecnica.Application.Carts.CreateCart;
 
 namespace PruebaTecnica.Api.Controllers;
 
@@ -55,6 +57,15 @@ public class CartController : Controller
         var results = await _sender.Send(command);
 
         return Ok(results);
+    }
+
+    [AllowAnonymous]
+    [ApiVersion(ApiVersions.V1)]
+    [HttpPost("items")]
+    public async Task<ActionResult<CartDto>> AddItem([FromBody] CreateCartItemCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
     }
 
     // [AllowAnonymous]

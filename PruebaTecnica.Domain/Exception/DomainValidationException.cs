@@ -1,6 +1,6 @@
 using System;
 
-namespace Domain.Exceptions
+namespace PruebaTecnica.Domain.Exceptions
 {
     public class DomainValidationException : Exception
     {

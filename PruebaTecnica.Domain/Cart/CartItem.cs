@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Domain.Exceptions;
+using PruebaTecnica.Domain.Exceptions;
 using PruebaTecnica.Domain.Abstractions;
 using PruebaTecnica.Domain.Products;
 
-namespace Domain.Cart
+namespace PruebaTecnica.Domain.Cart
 {
     public class CartItem : Entity<Guid>
     {

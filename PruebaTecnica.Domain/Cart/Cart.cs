@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PruebaTecnica.Domain.Abstractions;
 
-namespace Domain.Cart
+namespace PruebaTecnica.Domain.Cart
 {
     public class Cart : Entity<Guid>
     {
