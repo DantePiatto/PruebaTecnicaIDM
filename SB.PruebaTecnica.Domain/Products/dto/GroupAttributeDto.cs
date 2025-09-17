@@ -13,11 +13,11 @@ public class GroupAttributeDto
 
     // viene con "o" y "I" invertidas en el PDF (descripIon)
     [JsonPropertyName("description")]
-    public string? DescripIon { get; set; }
+    public string? Description { get; set; }
 
     // idem: quanItyInformaIon
     [JsonPropertyName("quantityInformation")]
-    public QuantityInformationDto? QuantityInformaIon { get; set; }
+    public QuantityInformationDto? QuantityInformation { get; set; }
 
     // idem: aSributes
     [JsonPropertyName("attributes")]
