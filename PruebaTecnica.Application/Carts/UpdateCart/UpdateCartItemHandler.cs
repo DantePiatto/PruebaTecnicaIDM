@@ -6,7 +6,7 @@ using PruebaTecnica.Domain.Products;
 
 namespace PruebaTecnica.Application.Carts.UpdateCart
 {
-    public class UpdateCartItemHandler : ICommandHandler<UpdateCartItemCommand, CartDto?>
+    public class UpdateCartItemHandler : ICommandHandler<UpdateCartItemCommand, Guid?>
     {
         private readonly IProductRepository _products;
         private readonly ICartRepository _cartRepo;
@@ -17,59 +17,55 @@ namespace PruebaTecnica.Application.Carts.UpdateCart
             _cartRepo = cartRepo;
         }
 
-        public async Task<Result<CartDto?>> Handle(UpdateCartItemCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid?>> Handle(UpdateCartItemCommand request, CancellationToken cancellationToken)
         {
 
             try
             {
                 var product = _products.GetById(request.ProductId);
+
                 if (product is null)
                 {
-                    return await Task.FromResult(Result.Failure<CartDto>(ProductErrors.NotFound));
+                    return await Task.FromResult(Result.Failure<Guid?>(ProductErrors.NotFound));
                 }
 
                 var cartItem = _cartRepo.GetItemById(request.CartItemId);
+                
                 if (cartItem is null)
-                    throw new DomainValidationException("El ítem no existe en el carrito.");
+                {
+                    return await Task.FromResult(Result.Failure<Guid?>(CartErrors.NotFound));
+                }
 
-                // 3) Construir nuevas selecciones desde el request
                 var selections = request.Groups
                     .SelectMany(g => g.Items.Select(i =>
                         new SelectedAttribute(g.GroupAttributeId, i.AttributeId, i.Quantity)))
                     .ToList();
 
-                // 4) Validaciones (idénticas a Add)
-                // 4.1 Por cada grupo enviado: existencia + cantidades por grupo/atributo
                 foreach (var grou in request.Groups)
                 {
-                    var group = product.GetGroupOrThrow(grou.GroupAttributeId); // lanza si no existe
+                    var group = product.GetGroupOrThrow(grou.GroupAttributeId); 
                     var selectionForGroup = grou.Items
                         .Select(i => (i.AttributeId, i.Quantity))
                         .ToList();
 
-                    group.ValidateSelection(selectionForGroup); // incluye total de grupo y max por atributo
+                    group.ValidateSelection(selectionForGroup); 
                 }
 
-                // 6. Validar cantidad del ítem
                 if (request.Quantity <= 0)
                     throw new DomainValidationException("La cantidad del producto debe ser mayor a 0.");
 
-                // 7. Aplicar cambios al CartItem existente (solo si todo lo anterior pasó)
-                cartItem.ReplaceSelections(selections);   // asegúrate de tener este método en CartItem
+                cartItem.ReplaceSelections(selections);   
                 cartItem.ChangeQuantity(request.Quantity);
 
-                // 8. Guardar carrito y devolver DTO
-                var cart = _cartRepo.Get();
-                _cartRepo.Save(cart);
 
-                var dto = new CartDto(cart);
-                return await Task.FromResult(Result.Success(dto, Message.Update));
+                _cartRepo.Update(cartItem);
+                return await Task.FromResult(Result.Success(request?.CartItemId, Message.Update));
 
 
             }
             catch (DomainValidationException ex)
             {
-                return await Task.FromResult(Result.Failure<CartDto>(new Error(400, ex.Message)));
+                return await Task.FromResult(Result.Failure<Guid?>(new Error(400, ex.Message)));
             }
             catch (Exception ex)
             {

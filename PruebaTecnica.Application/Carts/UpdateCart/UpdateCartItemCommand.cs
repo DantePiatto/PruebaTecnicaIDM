@@ -8,7 +8,7 @@ namespace PruebaTecnica.Application.Carts.UpdateCart
             long ProductId,
             int Quantity,
             List<GroupSelection> Groups
-        ) : ICommand<CartDto?>;
+        ) : ICommand<Guid?>;
 
     public record GroupSelection(string GroupAttributeId, List<ItemSelection> Items);
     public record ItemSelection(long AttributeId, int Quantity);

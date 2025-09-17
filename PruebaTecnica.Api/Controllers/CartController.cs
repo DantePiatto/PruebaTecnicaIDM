@@ -64,20 +64,16 @@ public class CartController : Controller
     [ApiVersion(ApiVersions.V1)]
     [HttpPatch("items/quantity")]
     public async Task<ActionResult<CartDto>> ChangeQuantity(
-    [FromBody] ChangeQuantityDto body,
+    [FromBody] ChangeCartItemQuantityCommand command,
     IMediator sender)
     {
-        if ((body.Quantity is null && body.Delta is null) ||
-            (body.Quantity is not null && body.Delta is not null))
-            return BadRequest(new { error = "Proporciona 'quantity' o 'delta', no ambos." });
 
-        if (body.Quantity is not null && body.Quantity < 1)
+        if (command.Quantity < 1)
             return BadRequest(new { error = "Quantity debe ser >= 1." });
 
         var result = await sender.Send(new ChangeCartItemQuantityCommand(
-            body.CartItemId ?? Guid.Empty,
-            body.Quantity,   
-            body.Delta       
+            command.CartItemId,
+            command.Quantity
         ));
 
         return Ok(result);

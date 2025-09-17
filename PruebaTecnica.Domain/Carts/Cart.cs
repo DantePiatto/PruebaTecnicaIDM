@@ -30,6 +30,18 @@ namespace PruebaTecnica.Domain.Carts
             item.ChangeQuantity(quantity);
         }
 
+        public void UpdateItem(CartItem cartItem)
+        {
+            var index = _items.FindIndex(i => i.Id == cartItem.Id);
+            
+            var updated = new CartItem(cartItem.Product, cartItem.Selections, cartItem.Quantity)
+            {
+                Id = cartItem.Id 
+            };
+
+            _items[index] = updated;
+        }
+
         public decimal Total() => Math.Round(_items.Sum(i => i.TotalPrice()), 2);
     }
 }

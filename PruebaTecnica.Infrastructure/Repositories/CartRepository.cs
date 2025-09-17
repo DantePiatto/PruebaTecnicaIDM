@@ -19,6 +19,9 @@ public class InMemoryCartRepository : ICartRepository
         public void UpdateQuantityCartItem(Guid idCartItem, int quantity)
          => _cart.ChangeItemQuantity(idCartItem, quantity);
 
+         public void Update(CartItem cartItem)
+         => _cart.UpdateItem(cartItem);
+
 
         public void Save(CartItem cartItem) => _cart.AddItem(cartItem);
 
