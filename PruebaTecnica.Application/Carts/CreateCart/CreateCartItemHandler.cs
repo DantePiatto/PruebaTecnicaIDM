@@ -20,7 +20,7 @@ namespace PruebaTecnica.Application.Carts.CreateCart
             _cartRepo = cartRepo;
         }
 
-        public  async Task<Result<CartDto?>> Handle(CreateCartItemCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CartDto?>> Handle(CreateCartItemCommand request, CancellationToken cancellationToken)
         {
 
             try
@@ -55,11 +55,8 @@ namespace PruebaTecnica.Application.Carts.CreateCart
                 if (request.Quantity <= 0)
                 {
                     throw new DomainValidationException("La cantidad del producto debe ser mayor a 0.");
-                    
                 }
 
-
-                //validacion
 
                 var item = new CartItem(product, selections, request.Quantity);
 
@@ -68,10 +65,14 @@ namespace PruebaTecnica.Application.Carts.CreateCart
                 _cartRepo.Save(cart);
 
                 var dto = new CartDto(cart);
-                
-                return await Task.FromResult(Result.Success(dto, Message.Create));
-                
 
+                return await Task.FromResult(Result.Success(dto, Message.Create));
+
+
+            }
+            catch (DomainValidationException ex)
+            {
+                return await Task.FromResult(Result.Failure<CartDto>(new Error(400, ex.Message)));
             }
             catch (Exception ex)
             {

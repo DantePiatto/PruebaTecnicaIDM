@@ -24,7 +24,10 @@ namespace PruebaTecnica.Domain.Products
         {
             var g = Groups.FirstOrDefault(g => g.Id == groupId);
             if (g is null)
+            {
                 throw new DomainValidationException($"El grupo {groupId} no existe en el producto {Id}.");
+                
+            }
             return g;
         }
     }
