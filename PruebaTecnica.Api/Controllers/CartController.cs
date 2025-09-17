@@ -6,6 +6,7 @@ using PruebaTecnica.Api.Utils;
 using PruebaTecnica.Domain.Carts;
 using PruebaTecnica.Application.Carts.CreateCart;
 using PruebaTecnica.Application.Carts.UpdateCart;
+using PruebaTecnica.Application.Carts.ChangeCartItemQuantity;
 
 namespace PruebaTecnica.Api.Controllers;
 
@@ -73,6 +74,30 @@ public class CartController : Controller
     public async Task<ActionResult<CartDto>> UpdateItem([FromBody] UpdateCartItemCommand command)
     {
         var result = await _sender.Send(command);
+        return Ok(result);
+    }
+
+    [AllowAnonymous]
+    [ApiVersion(ApiVersions.V1)]
+    [HttpPatch("items/{cartItemId:guid}/quantity")]
+    public async Task<ActionResult<CartDto>> ChangeQuantity(
+    Guid cartItemId,
+    [FromBody] ChangeQuantityDto body,
+    IMediator sender)
+    {
+        if ((body.Quantity is null && body.Delta is null) ||
+            (body.Quantity is not null && body.Delta is not null))
+            return BadRequest(new { error = "Proporciona 'quantity' o 'delta', no ambos." });
+
+        if (body.Quantity is not null && body.Quantity < 1)
+            return BadRequest(new { error = "Quantity debe ser >= 1." });
+
+        var result = await sender.Send(new ChangeCartItemQuantityCommand(
+            cartItemId,
+            body.Quantity,   // absolute
+            body.Delta       // relative
+        ));
+
         return Ok(result);
     }
 
