@@ -11,7 +11,8 @@ namespace PruebaTecnica.Domain.Carts
     {
         public Product Product { get; }
         public int Quantity { get; private set; }
-        public IReadOnlyList<SelectedAttribute> Selections { get; }
+        public IReadOnlyList<SelectedAttribute> Selections { get; private set; }
+        
 
         public CartItem(Product product, IEnumerable<SelectedAttribute> selections, int quantity = 1)
         {
@@ -63,5 +64,30 @@ namespace PruebaTecnica.Domain.Carts
                     throw new DomainValidationException($"El grupo obligatorio '{mg.Name}' debe enviarse en la selección.");
             }
         }
+
+        // public IReadOnlyList<SelectedAttribute> Selections { get; private set; }
+        public void ReplaceSelections(IEnumerable<SelectedAttribute> newSelections)
+        { 
+            var list = (newSelections ?? Enumerable.Empty<SelectedAttribute>()).ToList().AsReadOnly();
+
+            // Revalidar contra el producto del ítem antes de reemplazar (defensa extra)
+            var byGroup = list.GroupBy(s => s.GroupAttributeId)
+                            .ToDictionary(g => g.Key, g => g.Select(x => (x.AttributeId, x.Quantity)).ToList());
+
+            foreach (var kv in byGroup)
+            {
+                var group = Product.GetGroupOrThrow(kv.Key);
+                group.ValidateSelection(kv.Value);
+            }
+
+            foreach (var mg in Product.Groups.Where(g => g.QuantityInfo.VerifyValue == VerifyValue.EqualThan))
+            {
+                if (!byGroup.ContainsKey(mg.Id ?? ""))
+                    throw new DomainValidationException($"El grupo obligatorio '{mg.Name}' debe enviarse en la selección.");
+            }
+
+            Selections = list;
+         }
+
     }
 }

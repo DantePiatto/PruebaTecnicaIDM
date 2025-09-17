@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PruebaTecnica.Api.Utils;
 using PruebaTecnica.Domain.Carts;
 using PruebaTecnica.Application.Carts.CreateCart;
+using PruebaTecnica.Application.Carts.UpdateCart;
 
 namespace PruebaTecnica.Api.Controllers;
 
@@ -61,6 +62,15 @@ public class CartController : Controller
     [ApiVersion(ApiVersions.V1)]
     [HttpPost("items")]
     public async Task<ActionResult<CartDto>> AddItem([FromBody] CreateCartItemCommand command)
+    {
+        var result = await _sender.Send(command);
+        return Ok(result);
+    }
+
+    [AllowAnonymous]
+    [ApiVersion(ApiVersions.V1)]
+    [HttpPut("update")]
+    public async Task<ActionResult<CartDto>> UpdateItem([FromBody] UpdateCartItemCommand command)
     {
         var result = await _sender.Send(command);
         return Ok(result);
