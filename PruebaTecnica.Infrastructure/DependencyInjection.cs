@@ -45,7 +45,7 @@ public static class DependencyInjection
                
                return new InMemoryProductRepository(path); // ctor (string jsonFilePath)
            });
-        services.AddSingleton<ICartRepository>();
+        services.AddSingleton<ICartRepository, InMemoryCartRepository>();
 
 
 

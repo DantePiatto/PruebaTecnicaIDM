@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Domain.Exceptions;
+using PruebaTecnica.Domain.Exceptions;
 using PruebaTecnica.Domain.Abstractions;
 
 namespace PruebaTecnica.Domain.Products
