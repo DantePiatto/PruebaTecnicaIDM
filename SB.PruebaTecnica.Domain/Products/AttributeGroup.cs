@@ -3,7 +3,7 @@ using System.Linq;
 using Domain.Exceptions;
 using SB.PruebaTecnica.Domain.Abstractions;
 
-namespace Domain.Products
+namespace SB.PruebaTecnica.Domain.Products
 {
     public class AttributeGroup : Entity<string>
     {

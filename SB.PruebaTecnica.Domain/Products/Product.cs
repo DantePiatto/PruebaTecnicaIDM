@@ -3,12 +3,13 @@ using System.Linq;
 using Domain.Exceptions;
 using SB.PruebaTecnica.Domain.Abstractions;
 
-namespace Domain.Products
+namespace SB.PruebaTecnica.Domain.Products
+
 {
     public class Product : Entity<long>
     {
         public string Name { get; }
-        public decimal BasePrice { get; } // precio del producto sin personalizaciones
+        public decimal BasePrice { get; } 
         public IReadOnlyList<AttributeGroup> Groups { get; }
 
         public Product(long productId, string name, decimal basePrice, IEnumerable<AttributeGroup> groups)

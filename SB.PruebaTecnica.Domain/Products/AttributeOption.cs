@@ -1,6 +1,7 @@
 using SB.PruebaTecnica.Domain.Abstractions;
 
-namespace Domain.Products
+namespace SB.PruebaTecnica.Domain.Products
+
 {
     public class AttributeOption : Entity<long>
     {

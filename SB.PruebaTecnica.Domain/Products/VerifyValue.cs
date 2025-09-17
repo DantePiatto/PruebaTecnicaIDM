@@ -1,4 +1,5 @@
-namespace Domain.Products
+namespace SB.PruebaTecnica.Domain.Products
+
 {
     public enum VerifyValue
     {
