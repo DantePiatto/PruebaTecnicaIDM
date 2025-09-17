@@ -1,4 +1,4 @@
-namespace PruebaTecnica.Domain.Cart
+namespace PruebaTecnica.Domain.Carts
 {
     public class SelectedAttribute
     {

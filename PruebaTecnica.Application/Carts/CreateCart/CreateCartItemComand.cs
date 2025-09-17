@@ -1,6 +1,7 @@
-using MediatR;
-using PruebaTecnica.Domain.Cart;
-using System.Collections.Generic;
+
+
+using PruebaTecnica.Application.Abstractions.Messaging;
+using PruebaTecnica.Domain.Carts;
 
 namespace PruebaTecnica.Application.Carts.CreateCart
 {
@@ -8,7 +9,7 @@ namespace PruebaTecnica.Application.Carts.CreateCart
         long ProductId,
         int Quantity,
         List<GroupSelection> Groups
-    ) : IRequest<CartDto>;
+    ) : ICommand<CartDto?>;
 
     public record GroupSelection(string GroupAttributeId, List<ItemSelection> Items);
     public record ItemSelection(long AttributeId, int Quantity);

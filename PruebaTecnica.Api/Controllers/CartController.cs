@@ -2,10 +2,8 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SB.NombreProyecto.Domain.DTOs;
 using PruebaTecnica.Api.Utils;
-using PruebaTecnica.Application.EntidadesGubernamentales.CreateEntidadGubernamental;
-using PruebaTecnica.Domain.Cart;
+using PruebaTecnica.Domain.Carts;
 using PruebaTecnica.Application.Carts.CreateCart;
 
 namespace PruebaTecnica.Api.Controllers;
@@ -47,17 +45,17 @@ public class CartController : Controller
     //     return Ok(results);
     // }
 
-    [AllowAnonymous]
-    [ApiVersion(ApiVersions.V1)]
-    [HttpPost("create")]
-    public async Task<ActionResult<EntidadGubernamentalDto>> Create(
-        [FromBody] CreateCartCommand command
-    )
-    {
-        var results = await _sender.Send(command);
+    // [AllowAnonymous]
+    // [ApiVersion(ApiVersions.V1)]
+    // [HttpPost("create")]
+    // public async Task<ActionResult<EntidadGubernamentalDto>> Create(
+    //     [FromBody] Cre command
+    // )
+    // {
+    //     var results = await _sender.Send(command);
 
-        return Ok(results);
-    }
+    //     return Ok(results);
+    // }
 
     [AllowAnonymous]
     [ApiVersion(ApiVersions.V1)]

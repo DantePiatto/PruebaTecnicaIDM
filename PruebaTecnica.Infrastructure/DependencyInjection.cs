@@ -3,7 +3,7 @@ using Asp.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PruebaTecnica.Domain.Cart;
+using PruebaTecnica.Domain.Carts;
 using PruebaTecnica.Domain.Products;
 using PruebaTecnica.Infrastructure.Repositories;
 

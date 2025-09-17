@@ -1,15 +1,15 @@
 using MediatR;
-using PruebaTecnica.Domain.Interfaces;
-using PruebaTecnica.Domain.Cart;
+using PruebaTecnica.Domain.Carts;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using PruebaTecnica.Domain.Products;
 using PruebaTecnica.Domain.Exceptions;
+using PruebaTecnica.Domain.Abstractions;
+using PruebaTecnica.Application.Abstractions.Messaging;
+
 
 namespace PruebaTecnica.Application.Carts.CreateCart
 {
-    public class CreateCartItemHandler : IRequestHandler<CreateCartItemCommand, CartDto>
+    public class CreateCartItemHandler : ICommandHandler<CreateCartItemCommand, CartDto?>
     {
         private readonly IProductRepository _products;
         private readonly ICartRepository _cartRepo;
@@ -20,14 +20,17 @@ namespace PruebaTecnica.Application.Carts.CreateCart
             _cartRepo = cartRepo;
         }
 
-        public Task<CartDto> Handle(CreateCartItemCommand request, CancellationToken cancellationToken)
+        public  async Task<Result<CartDto?>> Handle(CreateCartItemCommand request, CancellationToken cancellationToken)
         {
 
             try
             {
-                var product = _products.GetById(request.ProductId)
-                              ?? throw new Domain.Exceptions.DomainValidationException(
-                                    $"Producto {request.ProductId} no existe.");
+                var product = _products.GetById(request.ProductId);
+
+                if (product == null)
+                {
+                    return await Task.FromResult(Result.Failure<CartDto>(ProductErrors.NotFound));
+                }
 
                 var selections = request.Groups
                     .SelectMany(g => g.Items.Select(i =>
@@ -50,7 +53,10 @@ namespace PruebaTecnica.Application.Carts.CreateCart
                 }
 
                 if (request.Quantity <= 0)
+                {
                     throw new DomainValidationException("La cantidad del producto debe ser mayor a 0.");
+                    
+                }
 
 
                 //validacion
@@ -62,13 +68,14 @@ namespace PruebaTecnica.Application.Carts.CreateCart
                 _cartRepo.Save(cart);
 
                 var dto = new CartDto(cart);
-                return Task.FromResult(dto);
-
+                
+                return await Task.FromResult(Result.Success(dto, Message.Create));
+                
 
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Data);    
+                Console.WriteLine(ex.Data);
                 throw;
             }
         }

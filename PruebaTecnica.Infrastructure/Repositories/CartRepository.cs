@@ -1,5 +1,7 @@
+
 namespace PruebaTecnica.Infrastructure.Repositories;
-using PruebaTecnica.Domain.Cart;
+
+using PruebaTecnica.Domain.Carts;
 
 public class InMemoryCartRepository : ICartRepository
 {

@@ -5,7 +5,7 @@ using PruebaTecnica.Domain.Exceptions;
 using PruebaTecnica.Domain.Abstractions;
 using PruebaTecnica.Domain.Products;
 
-namespace PruebaTecnica.Domain.Cart
+namespace PruebaTecnica.Domain.Carts
 {
     public class CartItem : Entity<Guid>
     {

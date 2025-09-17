@@ -1,8 +1,6 @@
-using PruebaTecnica.Domain.Cart;
-using System.Linq;
-using System.Collections.Generic;
 
-namespace PruebaTecnica.Domain.Cart
+
+namespace PruebaTecnica.Domain.Carts
 {
     public class CartDto
     {
