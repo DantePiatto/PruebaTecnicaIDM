@@ -21,7 +21,7 @@ Sigue los pasos a continuación para ejecutar la API:
    Una vez que los contenedores estén en ejecución, dirígete al directorio de la API:
 
    ```
-   cd SB.PruebaTecnica.Api
+   cd PruebaTecnica.Api
    ```
 3. **Ejecutar la aplicación:**
    En la misma terminal, ejecuta el siguiente comando para iniciar la API:
