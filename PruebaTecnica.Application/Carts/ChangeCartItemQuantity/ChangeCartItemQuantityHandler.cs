@@ -25,7 +25,7 @@ namespace PruebaTecnica.Application.Carts.ChangeCartItemQuantity
 
             _cartRepo.UpdateQuantityCartItem(request.CartItemId, request.Quantity);
 
-            return await Task.FromResult(Result.Success(request?.CartItemId, Message.Delete));
+            return await Task.FromResult(Result.Success(request?.CartItemId, Message.Update));
 
         }
     }
