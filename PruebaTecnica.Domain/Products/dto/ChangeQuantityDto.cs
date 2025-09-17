@@ -1,5 +1,6 @@
 public sealed class ChangeQuantityDto
 {
-    public int? Quantity { get; set; }  // absoluta
-    public int? Delta { get; set; }     // relativa
+    public Guid? CartItemId { get; set; }
+    public int? Quantity { get; set; } 
+    public int? Delta { get; set; }    
 }

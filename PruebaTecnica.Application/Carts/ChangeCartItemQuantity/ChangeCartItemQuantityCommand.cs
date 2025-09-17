@@ -1,8 +1,9 @@
-using MediatR;
-using PruebaTecnica.Domain.Carts;
+
+
+using PruebaTecnica.Application.Abstractions.Messaging;
 
 namespace PruebaTecnica.Application.Carts.ChangeCartItemQuantity
 {
-public record ChangeCartItemQuantityCommand(Guid CartItemId, int? Quantity, int? Delta)
-    : IRequest<CartDto>;
+public record ChangeCartItemQuantityCommand(Guid CartItemId, int Quantity)
+    : ICommand<Guid?>;
 }

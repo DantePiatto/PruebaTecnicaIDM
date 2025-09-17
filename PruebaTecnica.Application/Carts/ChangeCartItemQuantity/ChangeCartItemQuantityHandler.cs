@@ -1,35 +1,32 @@
 using MediatR;
+using PruebaTecnica.Application.Abstractions.Messaging;
+using PruebaTecnica.Domain.Abstractions;
 using PruebaTecnica.Domain.Carts;
 using PruebaTecnica.Domain.Exceptions;
+using PruebaTecnica.Domain.Products;
 
 namespace PruebaTecnica.Application.Carts.ChangeCartItemQuantity
-{public class ChangeCartItemQuantityHandler
-    : IRequestHandler<ChangeCartItemQuantityCommand, CartDto>
 {
-    private readonly ICartRepository _cartRepo;
-    public ChangeCartItemQuantityHandler(ICartRepository cartRepo) => _cartRepo = cartRepo;
-
-    public Task<CartDto> Handle(ChangeCartItemQuantityCommand request, CancellationToken ct)
+    public class ChangeCartItemQuantityHandler
+    : ICommandHandler<ChangeCartItemQuantityCommand, Guid?>
     {
-        var cart = _cartRepo.Get();
+        private readonly ICartRepository _cartRepo;
+        public ChangeCartItemQuantityHandler(ICartRepository cartRepo) => _cartRepo = cartRepo;
 
-        var item = cart.Items.FirstOrDefault(i => i.Id == request.CartItemId)
-            ?? throw new DomainValidationException("El ítem no existe en el carrito.");
-
-        if (request.Quantity is not null)
+        public async Task<Result<Guid?>> Handle(ChangeCartItemQuantityCommand request, CancellationToken ct)
         {
-            // absoluta (idempotente)
-            item.ChangeQuantity(request.Quantity.Value);
-        }
-        else
-        {
-            // relativa (delta)
-            var newQty = item.Quantity + request.Delta!.Value;
-            item.ChangeQuantity(newQty); // valida >= 1
-        }
+            var cartItem = _cartRepo.GetOneCartItem(request.CartItemId);
 
-        _cartRepo.Save(cart);
-        return Task.FromResult(new CartDto(cart));
+            if (cartItem == null)
+            {
+                return await Task.FromResult(Result.Failure<Guid?>(CartErrors.NotFound));
+
+            }
+
+            _cartRepo.UpdateQuantityCartItem(request.CartItemId, request.Quantity);
+
+            return await Task.FromResult(Result.Success(request?.CartItemId, Message.Delete));
+
+        }
     }
-}
 }

@@ -24,10 +24,10 @@ namespace PruebaTecnica.Domain.Carts
 
         public void Remove(Guid cartItemId) => _items.RemoveAll(i => i.Id == cartItemId);
 
-        public void ChangeItemQuantity(Guid cartItemId, int delta)
+        public void ChangeItemQuantity(Guid cartItemId, int quantity)
         {
             var item = _items.First(i => i.Id == cartItemId);
-            item.ChangeQuantity(item.Quantity + delta);
+            item.ChangeQuantity(quantity);
         }
 
         public decimal Total() => Math.Round(_items.Sum(i => i.TotalPrice()), 2);

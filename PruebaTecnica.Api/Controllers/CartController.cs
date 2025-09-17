@@ -62,9 +62,8 @@ public class CartController : Controller
 
     [AllowAnonymous]
     [ApiVersion(ApiVersions.V1)]
-    [HttpPatch("items/{cartItemId:guid}/quantity")]
+    [HttpPatch("items/quantity")]
     public async Task<ActionResult<CartDto>> ChangeQuantity(
-    Guid cartItemId,
     [FromBody] ChangeQuantityDto body,
     IMediator sender)
     {
@@ -76,9 +75,9 @@ public class CartController : Controller
             return BadRequest(new { error = "Quantity debe ser >= 1." });
 
         var result = await sender.Send(new ChangeCartItemQuantityCommand(
-            cartItemId,
-            body.Quantity,   // absolute
-            body.Delta       // relative
+            body.CartItemId ?? Guid.Empty,
+            body.Quantity,   
+            body.Delta       
         ));
 
         return Ok(result);
