@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PruebaTecnica.Api.Utils;
 using PruebaTecnica.Domain.Carts;
-using PruebaTecnica.Application.Carts.CreateCart;
 using PruebaTecnica.Application.Carts.UpdateCart;
 using PruebaTecnica.Application.Carts.ChangeCartItemQuantity;
+using PruebaTecnica.Application.Carts.CreateCartItem;
+using PruebaTecnica.Application.Carts.GetAllCartItems;
+using PruebaTecnica.Application.Carts.DeleteCartItem;
 
 namespace PruebaTecnica.Api.Controllers;
 
@@ -25,39 +27,20 @@ public class CartController : Controller
     }
 
 
-    // [AllowAnonymous]
-    // [ApiVersion(ApiVersions.V1)]
-    // [HttpGet("get-by-id/{id}")]
-    // public async Task<ActionResult<EntidadGubernamentalDto>> GetById(int id)
-    // {
-    //     var request = new GetByIdEntidadGubernamentalQuery { Id = id };
-    //     var results = await _sender.Send(request);
 
-    //     return Ok(results);
-    // }
 
-    // [AllowAnonymous]
-    // [ApiVersion(ApiVersions.V1)]
-    // [HttpGet("get-all")]
-    // public async Task<ActionResult<EntidadGubernamentalDto>> GetAll()
-    // {
-    //     var request = new GetAllEntidadGubernamentalQuery { };
-    //     var results = await _sender.Send(request);
+    [AllowAnonymous]
+    [ApiVersion(ApiVersions.V1)]
+    [HttpGet("get-all")]
+    public async Task<ActionResult<CartDto>> GetAll()
+    {
+        var request = new GetAllCartItemsQuery { };
+        var results = await _sender.Send(request);
 
-    //     return Ok(results);
-    // }
+        return Ok(results);
+    }
 
-    // [AllowAnonymous]
-    // [ApiVersion(ApiVersions.V1)]
-    // [HttpPost("create")]
-    // public async Task<ActionResult<EntidadGubernamentalDto>> Create(
-    //     [FromBody] Cre command
-    // )
-    // {
-    //     var results = await _sender.Send(command);
 
-    //     return Ok(results);
-    // }
 
     [AllowAnonymous]
     [ApiVersion(ApiVersions.V1)]
@@ -101,28 +84,19 @@ public class CartController : Controller
         return Ok(result);
     }
 
-    // [AllowAnonymous]
-    // [ApiVersion(ApiVersions.V1)]
-    // [HttpPut("update")]
-    // public async Task<ActionResult<EntidadGubernamentalDto>> Update(
-    //     [FromBody] UpdateEntidadGubernamentalCommand command
-    // )
-    // {
-    //     var results = await _sender.Send(command);
 
-    //     return Ok(results);
-    // }
+    [AllowAnonymous]
+    [ApiVersion(ApiVersions.V1)]
+    [HttpDelete("delete/{Id}")]
+    public async Task<ActionResult<string>> Delete(
+        string Id
+    )
+    {
 
-    // [AllowAnonymous]
-    // [ApiVersion(ApiVersions.V1)]
-    // [HttpDelete("Delete/{Id}")]
-    // public async Task<ActionResult<EntidadGubernamentalDto>> Delete(
-    //     int Id
-    // )
-    // {  
-    //     var command = new DeleteEntidadGubernamentalCommand(Id);
-    //     var results = await _sender.Send(command);
+        var command = new DeleteCartItemCommand(Guid.Parse(Id));
 
-    //     return Ok(results);
-    // }
+        var results = await _sender.Send(command);
+
+        return Ok(results);
+    }
 }

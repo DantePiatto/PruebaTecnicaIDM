@@ -1,7 +1,9 @@
 
+using PruebaTecnica.Domain.Carts;
+
 namespace PruebaTecnica.Infrastructure.Repositories;
 
-using PruebaTecnica.Domain.Carts;
+// using PruebaTecnica.Domain.Carts;
 
 public class InMemoryCartRepository : ICartRepository
 {
@@ -9,7 +11,13 @@ public class InMemoryCartRepository : ICartRepository
 
         public Cart Get() => _cart;
 
-        public void Save(Cart cart) => _cart = cart;
+        public CartItem? GetOneCartItem(Guid IdCartItem) => _cart.Items.FirstOrDefault(x => x.Id == IdCartItem);
+
+        public void DeleteCartItem(Guid idCartItem)
+         => _cart.Remove(idCartItem);
+
+
+        public void Save(CartItem cartItem) => _cart.AddItem(cartItem);
 
         public void Clear() => _cart = new Cart();
         public CartItem? GetItemById(Guid cartItemId)

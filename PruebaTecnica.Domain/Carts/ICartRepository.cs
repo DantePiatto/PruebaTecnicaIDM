@@ -4,7 +4,9 @@ namespace PruebaTecnica.Domain.Carts;
 public interface ICartRepository
 {
     Cart Get();
-    void Save(Cart cart);
+    CartItem? GetOneCartItem(Guid idCartItem);
+    void Save(CartItem cartItem);
+    void DeleteCartItem(Guid idCartItem);
     void Clear();
     CartItem? GetItemById(Guid cartItemId);
 }

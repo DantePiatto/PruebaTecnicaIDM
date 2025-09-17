@@ -7,9 +7,9 @@ using PruebaTecnica.Domain.Abstractions;
 using PruebaTecnica.Application.Abstractions.Messaging;
 
 
-namespace PruebaTecnica.Application.Carts.CreateCart
+namespace PruebaTecnica.Application.Carts.CreateCartItem
 {
-    public class CreateCartItemHandler : ICommandHandler<CreateCartItemCommand, CartDto?>
+    public class CreateCartItemHandler : ICommandHandler<CreateCartItemCommand, Guid?>
     {
         private readonly IProductRepository _products;
         private readonly ICartRepository _cartRepo;
@@ -20,7 +20,7 @@ namespace PruebaTecnica.Application.Carts.CreateCart
             _cartRepo = cartRepo;
         }
 
-        public async Task<Result<CartDto?>> Handle(CreateCartItemCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid?>> Handle(CreateCartItemCommand request, CancellationToken cancellationToken)
         {
 
             try
@@ -29,7 +29,7 @@ namespace PruebaTecnica.Application.Carts.CreateCart
 
                 if (product == null)
                 {
-                    return await Task.FromResult(Result.Failure<CartDto>(ProductErrors.NotFound));
+                    return await Task.FromResult(Result.Failure<Guid?>(ProductErrors.NotFound));
                 }
 
                 var selections = request.Groups
@@ -37,9 +37,6 @@ namespace PruebaTecnica.Application.Carts.CreateCart
                         new SelectedAttribute(g.GroupAttributeId, i.AttributeId, i.Quantity)))
                     .ToList();
 
-
-
-                //validacion
 
                 foreach (var grou in request.Groups)
                 {
@@ -60,19 +57,16 @@ namespace PruebaTecnica.Application.Carts.CreateCart
 
                 var item = new CartItem(product, selections, request.Quantity);
 
-                var cart = _cartRepo.Get();
-                cart.AddItem(item);
-                _cartRepo.Save(cart);
+                _cartRepo.Save(item);
 
-                var dto = new CartDto(cart);
 
-                return await Task.FromResult(Result.Success(dto, Message.Create));
+                return await Task.FromResult(Result.Success(item?.Id, Message.Create));
 
 
             }
             catch (DomainValidationException ex)
             {
-                return await Task.FromResult(Result.Failure<CartDto>(new Error(400, ex.Message)));
+                return await Task.FromResult(Result.Failure<Guid?>(new Error(400, ex.Message)));
             }
             catch (Exception ex)
             {
